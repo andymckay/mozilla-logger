@@ -4,7 +4,7 @@ import unittest
 
 import mock
 
-import log
+from mozilla_logger import log
 
 # For OSX, you want a lower number for the tests.
 @mock.patch.object(log, 'MAX_SIZE', 2000)
@@ -14,17 +14,17 @@ class TestErrorLog(unittest.TestCase):
         self.log = logging.getLogger('test.logging')
         self.log.addHandler(log.UnicodeHandler())
 
-    @mock.patch('log.UnicodeHandler.emitted')
+    @mock.patch('mozilla_logger.log.UnicodeHandler.emitted')
     def test_called(self, emitted):
         self.log.error('blargh!')
         assert emitted.called
 
-    @mock.patch('log.UnicodeHandler.emitted')
+    @mock.patch('mozilla_logger.log.UnicodeHandler.emitted')
     def test_large(self, emitted):
         self.log.error('*' * (log.MAX_SIZE + 10))
         assert emitted.called
 
-    @mock.patch('log.UnicodeHandler.emitted')
+    @mock.patch('mozilla_logger.log.UnicodeHandler.emitted')
     def test_unicode(self, emitted):
         self.log.error(u'نصرت فتح علی خان')
         assert emitted.called
